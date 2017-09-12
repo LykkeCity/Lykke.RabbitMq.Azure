@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AzureStorage;
@@ -9,7 +10,8 @@ using Newtonsoft.Json;
 
 namespace Lykke.RabbitMq.Azure
 {
-    public class BlobPublishingQueueRepository<TMessageModel> : IPublishingQueueRepository<TMessageModel>
+    public class BlobPublishingQueueRepository<TMessageModel, TMessageAbstraction> : IPublishingQueueRepository<TMessageAbstraction>
+        where TMessageModel : TMessageAbstraction, new()
     {
         private const string Container = "RabbitMqPublisherMessages";
         
@@ -27,7 +29,7 @@ namespace Lykke.RabbitMq.Azure
             _instanceName = instanceName;
         }
 
-        public async Task SaveAsync(IReadOnlyCollection<TMessageModel> items)
+        public async Task SaveAsync(IReadOnlyCollection<TMessageAbstraction> items)
         {
             using (var stream = new MemoryStream())
             using (var streamWriter = new StreamWriter(stream, Encoding.UTF8))
@@ -47,7 +49,7 @@ namespace Lykke.RabbitMq.Azure
             }
         }
 
-        public async Task<IReadOnlyCollection<TMessageModel>> LoadAsync()
+        public async Task<IReadOnlyCollection<TMessageAbstraction>> LoadAsync()
         {
             if (!await _storage.HasBlobAsync(Container, GetKey()))
             {
@@ -64,7 +66,9 @@ namespace Lykke.RabbitMq.Azure
 
                 var serializer = new JsonSerializer();
 
-                return serializer.Deserialize<TMessageModel[]>(jsonReader);
+                return serializer.Deserialize<TMessageModel[]>(jsonReader)
+                    .Cast<TMessageAbstraction>()
+                    .ToArray();
             }
         }
 
