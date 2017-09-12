@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Product>Lykke.RabbitMqBroker</Product>
+    <Company>Lykke</Company>
+    <Authors>Lykke</Authors>
+    <Version>1.0.1</Version>
+    <Description>Azure integration for Lykke.RabbitMq</Description>
+    <PackageProjectUrl>https://github.com/LykkeCity/Lykke.RabbitMq.Azure</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/LykkeCity/Lykke.RabbitMq.Azure</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIconUrl>https://avatars3.githubusercontent.com/u/14153330?v=3&amp;amp;s=200</PackageIconUrl>
+    <PackageTags>Lykke</PackageTags>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lykke.AzureStorage" Version="1.2.41" />
+    <PackageReference Include="lykke.RabbitMqBroker" Version="2.0.2" />
+  </ItemGroup>
+
+</Project>
