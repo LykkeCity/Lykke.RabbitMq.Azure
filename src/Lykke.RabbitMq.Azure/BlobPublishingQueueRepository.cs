@@ -19,7 +19,7 @@ namespace Lykke.RabbitMq.Azure
 
         /// <param name="storage"></param>
         /// <param name="instanceName">Instance name, required when multiple publishers publishes to single exchange</param>
-        public BlobPublishingQueueRepository(IBlobStorage storage, string instanceName)
+        public BlobPublishingQueueRepository(IBlobStorage storage, string instanceName = null)
         {
             _storage = storage;
             _instanceName = instanceName;
