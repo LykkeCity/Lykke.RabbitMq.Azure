@@ -8,12 +8,12 @@ namespace Lykke.RabbitMq.AzureTests
     [TestFixture, Explicit("Depends on local azure storage emulator")]
     internal sealed class BlobPublishingQueueRepositoryTest
     {
-        private AzureBlobStorage _azureBlobStorage;
+        private AzureBlobInMemory _azureBlobStorage;
 
         [SetUp]
         public void SetUp()
         {
-            _azureBlobStorage = new AzureBlobStorage("UseDevelopmentStorage=true");
+            _azureBlobStorage = new AzureBlobInMemory();
         }
 
         [Test]
