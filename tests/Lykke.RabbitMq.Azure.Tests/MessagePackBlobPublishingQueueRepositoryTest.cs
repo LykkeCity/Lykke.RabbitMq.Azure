@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AzureStorage.Blob;
-using Lykke.RabbitMq.Azure;
 using NUnit.Framework;
 
-namespace Lykke.RabbitMq.AzureTests
+namespace Lykke.RabbitMq.Azure.Tests
 {
     [TestFixture]
     internal sealed class MessagePackBlobPublishingQueueRepositoryTest

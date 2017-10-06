@@ -2,12 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AzureStorage.Blob;
-using Lykke.RabbitMq.Azure;
 using Lykke.RabbitMqBroker.Publisher;
 using Lykke.RabbitMqBroker.Subscriber;
 using NUnit.Framework;
 
-namespace Lykke.RabbitMq.AzureTests
+namespace Lykke.RabbitMq.Azure.Tests
 {
     [Obsolete("Used only for migration test")]
     [TestFixture]
