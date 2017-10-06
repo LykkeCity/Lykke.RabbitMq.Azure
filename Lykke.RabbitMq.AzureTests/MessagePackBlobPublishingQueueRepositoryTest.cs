@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Lykke.RabbitMq.AzureTests
 {
     [TestFixture]
-    internal sealed class BlobPublishingQueueRepositoryTest
+    internal sealed class MessagePackBlobPublishingQueueRepositoryTest
     {
         private AzureBlobInMemory _azureBlobStorage;
 
@@ -17,17 +17,21 @@ namespace Lykke.RabbitMq.AzureTests
         }
 
         [Test]
-        public async Task ShouldSerialize()
+        public async Task ShouldDeserializeSerialized()
         {
-            var repo = new BlobPublishingQueueRepository(_azureBlobStorage, "InstanceName");
+            // Arrange
+            var repo = new MessagePackBlobPublishingQueueRepository(_azureBlobStorage, "InstanceName");
 
             var expected = new[] { new byte[] { 1, 2, 3 }, new byte[] { 4, 5, 6 } };
 
             const string exchangeName = "ExchangeName";
 
             await repo.SaveAsync(expected, exchangeName);
+            
+            // Act
             var actual = await repo.LoadAsync(exchangeName);
 
+            // Assert
             Assert.That(expected, Is.EqualTo(actual));
         }
     }
