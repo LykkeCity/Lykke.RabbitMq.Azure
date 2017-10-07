@@ -8,8 +8,7 @@ using NUnit.Framework;
 
 namespace Lykke.RabbitMq.Azure.Tests
 {
-    [Obsolete("Used only for migration test")]
-    [TestFixture]
+    [TestFixture, Explicit("Used only for migration test")]
     internal sealed class MigrationRepositoryBlobPublishingQueueRepositoryTest
     {
         public class TestMessage

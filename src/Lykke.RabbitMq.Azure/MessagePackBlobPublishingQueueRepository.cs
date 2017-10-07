@@ -34,14 +34,10 @@ namespace Lykke.RabbitMq.Azure
             {
                 MessagePackSerializer.Serialize(stream, items);
 
-                await stream.FlushAsync();
-                stream.Seek(0, SeekOrigin.Begin);
-
                 await _storage.SaveBlobAsync(Container, GetKey(exchangeName), stream);
             }
         }
-
-
+        
         public async Task<IReadOnlyCollection<byte[]>> LoadAsync(string exchangeName)
         {
             if (!await _storage.HasBlobAsync(Container, GetKey(exchangeName)))
