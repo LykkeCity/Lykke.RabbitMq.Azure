@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using AzureStorage.Blob;
-using Lykke.RabbitMq.Azure;
 using NUnit.Framework;
 
-namespace Lykke.RabbitMq.AzureTests
+namespace Lykke.RabbitMq.Azure.Tests
 {
-    [TestFixture, Explicit("Depends on local azure storage emulator")]
+    [TestFixture]
     internal sealed class BlobPublishingQueueRepositoryTest
     {
         private AzureBlobInMemory _azureBlobStorage;

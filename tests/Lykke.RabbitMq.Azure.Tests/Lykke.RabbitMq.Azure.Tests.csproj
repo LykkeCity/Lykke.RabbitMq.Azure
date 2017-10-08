@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Lykke.RabbitMq.Azure\Lykke.RabbitMq.Azure.csproj" />
+    <ProjectReference Include="..\..\src\Lykke.RabbitMq.Azure\Lykke.RabbitMq.Azure.csproj" />
   </ItemGroup>
 
 </Project>

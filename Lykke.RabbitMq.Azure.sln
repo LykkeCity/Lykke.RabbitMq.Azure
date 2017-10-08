@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.RabbitMq.Azure", "src\Lykke.RabbitMq.Azure\Lykke.RabbitMq.Azure.csproj", "{138C0BE8-1D59-464D-9F76-4DA3E64B7C8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.RabbitMq.AzureTests", "Lykke.RabbitMq.AzureTests\Lykke.RabbitMq.AzureTests.csproj", "{E19F22D2-8EC2-4B5B-921B-758A8B622658}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.RabbitMq.AzureTests", "tests\Lykke.RabbitMq.Azure.Tests\Lykke.RabbitMq.Azure.Tests.csproj", "{E19F22D2-8EC2-4B5B-921B-758A8B622658}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

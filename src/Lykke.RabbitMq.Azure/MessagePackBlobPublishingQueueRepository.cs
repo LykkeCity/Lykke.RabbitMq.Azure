@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using AzureStorage;
 using Lykke.RabbitMqBroker.Publisher;
+using MessagePack;
 
 namespace Lykke.RabbitMq.Azure
 {
-    [Obsolete("Use MessagePackBlobPublishingQueueRepository")]
-    public sealed class BlobPublishingQueueRepository : IPublishingQueueRepository
+    public sealed class MessagePackBlobPublishingQueueRepository : IPublishingQueueRepository
     {
-        private const string Container = "RabbitMqPublisherMessages";
+        private const string Container = "RabbitMqPublisherMessages-v-3-1-mp";
 
         private readonly IBlobStorage _storage;
         private readonly string _instanceName;
 
         /// <param name="storage"></param>
         /// <param name="instanceName">Instance name, required when multiple publishers publishes to single exchange</param>
-        public BlobPublishingQueueRepository(IBlobStorage storage, string instanceName = null)
+        public MessagePackBlobPublishingQueueRepository(IBlobStorage storage, string instanceName = null)
         {
             _storage = storage;
             _instanceName = instanceName;
@@ -35,25 +32,22 @@ namespace Lykke.RabbitMq.Azure
         {
             using (var stream = new MemoryStream())
             {
-                var formater = new BinaryFormatter();
-                formater.Serialize(stream, items.ToArray());
+                MessagePackSerializer.Serialize(stream, items);
+
                 await _storage.SaveBlobAsync(Container, GetKey(exchangeName), stream);
             }
         }
-
-
+        
         public async Task<IReadOnlyCollection<byte[]>> LoadAsync(string exchangeName)
         {
             if (!await _storage.HasBlobAsync(Container, GetKey(exchangeName)))
             {
-                return new byte[0][];
+                return null;
             }
 
             using (var stream = await _storage.GetAsync(Container, GetKey(exchangeName)))
             {
-                var formater = new BinaryFormatter();
-                var result = (IReadOnlyCollection<byte[]>)(byte[][])formater.Deserialize(stream);
-                return result;
+                return MessagePackSerializer.Deserialize<IReadOnlyCollection<byte[]>>(stream);
             }
         }
 
