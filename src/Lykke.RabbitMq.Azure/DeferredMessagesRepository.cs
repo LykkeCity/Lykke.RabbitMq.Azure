@@ -110,6 +110,8 @@ namespace Lykke.RabbitMq.Azure
         /// <inheritdoc cref="IDeferredMessagesRepository.GetOverdueMessagesAsync"/>
         public async Task<IReadOnlyList<DeferredMessageEnvelope>> GetOverdueMessagesAsync(DateTime forTheMoment)
         {
+            const int resultsLimit = 1000;
+
             var toPartitionKey = GetPartitionKey(forTheMoment);
             var partitionFilter = TableQuery.GenerateFilterCondition(
                 nameof(DeferredMessageEntity.PartitionKey), 
@@ -134,7 +136,7 @@ namespace Lykke.RabbitMq.Azure
                     result.AddRange(envelopes);
                 },
                 // Limits results count
-                () => result.Count < 1000);
+                () => result.Count < resultsLimit);
 
             return result;
         }
