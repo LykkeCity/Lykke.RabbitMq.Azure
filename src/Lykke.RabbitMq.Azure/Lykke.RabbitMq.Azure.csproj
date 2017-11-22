@@ -16,10 +16,20 @@
     <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Lykke.RabbitMq.Azure.xml</DocumentationFile>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Lykke.RabbitMq.Azure.xml</DocumentationFile>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Lykke.AzureStorage" Version="2.*" />
-    <PackageReference Include="lykke.RabbitMqBroker" Version="4.*" />
-    <PackageReference Include="MessagePack" Version="1.*" />
+    <PackageReference Include="Lykke.AzureStorage" Version="3.0.3" />
+    <PackageReference Include="lykke.RabbitMqBroker" Version="4.1.0" />
+    <PackageReference Include="MessagePack" Version="1.7.2" />
   </ItemGroup>
 
 </Project>
