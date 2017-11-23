@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Lykke.RabbitMq.Azure.Tests
 {
     [TestFixture]
-    internal sealed class MessagePackBlobPublishingQueueRepositoryTest
+    internal sealed class MessagePackBlobPublishingQueueRepositoryTests
     {
         private AzureBlobInMemory _azureBlobStorage;
 
