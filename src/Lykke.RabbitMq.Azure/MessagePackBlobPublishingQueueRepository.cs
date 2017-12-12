@@ -9,7 +9,7 @@ namespace Lykke.RabbitMq.Azure
 {
     public sealed class MessagePackBlobPublishingQueueRepository : IPublishingQueueRepository
     {
-        private const string Container = "RabbitMqPublisherMessages-v-3-1-mp";
+        private const string Container = "rabbitmqpublishermessages-v-3-1-mp";
 
         private readonly IBlobStorage _storage;
         private readonly string _instanceName;
