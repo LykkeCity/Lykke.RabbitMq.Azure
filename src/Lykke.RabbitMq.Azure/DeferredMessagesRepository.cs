@@ -8,6 +8,7 @@ using AzureStorage.Tables;
 using Common;
 using Common.Log;
 using JetBrains.Annotations;
+using Lykke.RabbitMqBroker.Publisher;
 using Lykke.RabbitMqBroker.Publisher.DeferredMessages;
 using Lykke.SettingsReader;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -89,7 +90,7 @@ namespace Lykke.RabbitMq.Azure
         }
 
         /// <inheritdoc cref="IDeferredMessagesRepository.SaveAsync"/>
-        public async Task SaveAsync(byte[] message, DateTime deliverAt)
+        public async Task SaveAsync(RawMessage message, DateTime deliverAt)
         {
             if (message == null)
             {
@@ -103,7 +104,8 @@ namespace Lykke.RabbitMq.Azure
             {
                 PartitionKey = pk,
                 RowKey = rk,
-                Message = message
+                Message = message.Body,
+                RoutingKey = message.RoutingKey
             });
         }
 
@@ -127,12 +129,12 @@ namespace Lykke.RabbitMq.Azure
             var tableQuery = new TableQuery<DeferredMessageEntity>().Where(filter);
             var result = new List<DeferredMessageEnvelope>();
 
-            await _storage.ExecuteAsync(tableQuery, messages =>
+            await _storage.ExecuteAsync(tableQuery, entities =>
                 {
-                    var envelopes = messages.Select(message =>
+                    var envelopes = entities.Select(entity =>
                         new DeferredMessageEnvelope(
-                            $"{message.PartitionKey}&{message.RowKey}",
-                            message.Message));
+                            $"{entity.PartitionKey}&{entity.RowKey}",
+                            new RawMessage(entity.Message, entity.RoutingKey)));
                     result.AddRange(envelopes);
                 },
                 // Limits results count

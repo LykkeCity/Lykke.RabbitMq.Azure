@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AzureStorage.Blob;
+using Lykke.RabbitMqBroker.Publisher;
 using NUnit.Framework;
 
 namespace Lykke.RabbitMq.Azure.Tests
@@ -21,17 +23,25 @@ namespace Lykke.RabbitMq.Azure.Tests
             // Arrange
             var repo = new MessagePackBlobPublishingQueueRepository(_azureBlobStorage, "InstanceName");
 
-            var expected = new[] { new byte[] { 1, 2, 3 }, new byte[] { 4, 5, 6 } };
+            var expected = new[]
+            {
+                new RawMessage(new byte[] { 1, 2, 3 }, null),
+                new RawMessage(new byte[] { 4, 5, 6 }, "route1")
+            };
 
             const string exchangeName = "ExchangeName";
 
             await repo.SaveAsync(expected, exchangeName);
             
             // Act
-            var actual = await repo.LoadAsync(exchangeName);
+            var actual = (await repo.LoadAsync(exchangeName)).ToArray();
 
             // Assert
-            Assert.That(expected, Is.EqualTo(actual));
+            Assert.That(expected.Length, Is.EqualTo(actual.Length));
+            Assert.That(expected[0].Body, Is.EqualTo(actual[0].Body));
+            Assert.That(expected[0].RoutingKey, Is.EqualTo(actual[0].RoutingKey));
+            Assert.That(expected[1].Body, Is.EqualTo(actual[1].Body));
+            Assert.That(expected[1].RoutingKey, Is.EqualTo(actual[1].RoutingKey));
         }
     }
 }
