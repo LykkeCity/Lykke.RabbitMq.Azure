@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureStorage;
+using Lykke.RabbitMqBroker.Publisher;
 using Moq;
 using NUnit.Framework;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -43,7 +44,7 @@ namespace Lykke.RabbitMq.Azure.Tests
             // Act
             for (int i = 0; i < 1010; ++i)
             {
-                await repo.SaveAsync(Array.Empty<byte>(), deliverAt);
+                await repo.SaveAsync(new RawMessage(Array.Empty<byte>(), null), deliverAt);
             }
 
             // Assert
@@ -78,7 +79,7 @@ namespace Lykke.RabbitMq.Azure.Tests
                     });
 
             // Act
-            await repo.SaveAsync(Array.Empty<byte>(), deliverAt);
+            await repo.SaveAsync(new RawMessage(Array.Empty<byte>(), null), deliverAt);
 
             // Assert
             Assert.AreEqual(expectedPartitionKey, savedPartitionKey);
