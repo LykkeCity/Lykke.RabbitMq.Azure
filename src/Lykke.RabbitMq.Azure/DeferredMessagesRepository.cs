@@ -8,6 +8,7 @@ using AzureStorage.Tables;
 using Common;
 using Common.Log;
 using JetBrains.Annotations;
+using Lykke.Common.Log;
 using Lykke.RabbitMqBroker.Publisher;
 using Lykke.RabbitMqBroker.Publisher.DeferredMessages;
 using Lykke.SettingsReader;
@@ -52,6 +53,7 @@ namespace Lykke.RabbitMq.Azure
         /// </p>
         /// Default value is <see cref="DeferredMessagesPartitionSize.Minute"/>
         /// </param>
+        [Obsolete]
         public static IDeferredMessagesRepository Create(
             ILog log,
             IReloadingManager<string> connectionString,
@@ -59,6 +61,39 @@ namespace Lykke.RabbitMq.Azure
         {
             return new DeferredMessagesRepository(
                 AzureTableStorage<DeferredMessageEntity>.Create(connectionString, tableName, log),
+                partitionSize);
+        }
+
+        /// <summary>
+        /// Creates <see cref="DeferredMessagesRepository"/> with default settings.
+        /// <see cref="DeferredMessagesRepository"/> stores deferred messages in the Azure Table Storage.
+        /// Note, that message size is limited to the 65 Kb 
+        /// and you can publish only up to the 1000 messages for the same delivery moment
+        /// </summary>
+        /// <param name="logFactory">The log factory</param>
+        /// <param name="connectionString">The connection string reloading manager</param>
+        /// <param name="tableName">The table name. Ensure, that only your app uses this table</param>
+        /// <param name="partitionSize">
+        /// <p>
+        /// Messages partition size in time.
+        /// Choose actual value accroding to your typical deferred messages delay period and the messages rate.
+        /// Good value is when amount of partitions is balanced with amount of the messages in the single partition.
+        /// </p>
+        /// <p>
+        /// If your publishes about 70 messages per minute and in the average the message is deferred about 1 hour, 
+        /// <see cref="DeferredMessagesPartitionSize.Minute"/> is a good choice. Because a single partition will 
+        /// contains about 70 messages, and there will be about 60 partitions of not overdue messages in the storage
+        /// </p>
+        /// Default value is <see cref="DeferredMessagesPartitionSize.Minute"/>
+        /// </param>
+        public static IDeferredMessagesRepository Create(
+            [NotNull] ILogFactory logFactory,
+            [NotNull] IReloadingManager<string> connectionString,
+            [NotNull] string tableName, 
+            DeferredMessagesPartitionSize partitionSize = DeferredMessagesPartitionSize.Minute)
+        {
+            return new DeferredMessagesRepository(
+                AzureTableStorage<DeferredMessageEntity>.Create(connectionString, tableName, logFactory), 
                 partitionSize);
         }
 

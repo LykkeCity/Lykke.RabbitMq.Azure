@@ -27,8 +27,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lykke.AzureStorage" Version="3.0.3" />
-    <PackageReference Include="lykke.RabbitMqBroker" Version="7.0.0" />
+    <PackageReference Include="Lykke.AzureStorage" Version="8.6.0" />
+    <PackageReference Include="lykke.RabbitMqBroker" Version="7.0.1" />
     <PackageReference Include="MessagePack" Version="1.7.3.4" />
   </ItemGroup>
 
